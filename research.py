@@ -112,6 +112,47 @@ print("words_publisher", words_publisher)
 print("readingLevel", readingLevel)
 print("readingTime", readingTime)
 
+# Create a workbook and add a worksheet.
+workbook = xlsxwriter.Workbook('Stats.xlsx')
+worksheet = workbook.add_worksheet()
+
+# Some data we want to write to the worksheet.
+expenses = (
+    ['charLength', nChars],
+    ['nWords',   nWords],
+    ['nUniqueWords',  nUniqueWords],
+    ['ncharNoSpaces',    ncharNoSpaces],
+    ['nSentences',    nSentences],
+    ['wordsLongestSentence',    wordsLongestSentence],
+    ['wordsShortestSentence',    wordsShortestSentence],
+    ['avgSentenceWords',    avgSentenceWords],
+    ['avgSentenceChars',    avgSentenceChars],
+    ['avgWordLength',    avgWordLength],
+    ['nParagraphs',    nParagraphs],
+    ['syllables',    syllables],
+    ['words_publisher',    words_publisher],
+    ['readingLevel',    readingLevel],
+    ['readingTime',    readingTime]   
+)
+
+# Start from the first cell. Rows and columns are zero indexed.
+row = 0
+col = 0
+
+# Iterate over the data and write it out row by row.
+for item, cost in (expenses):
+    worksheet.write(row, col,     item)
+    worksheet.write(row, col + 1, cost)
+    row += 1
+
+workbook.close()
+
+
+
+
+
+
+
 
 
 
