@@ -1,7 +1,9 @@
 import textstat
 textstat.set_lang("en_US")
-
 import xlsxwriter
+#from xlutils.copy import copy    
+#from xlrd import open_workbook
+
 
 txt = "my name is ahsan \n asd ahsan. hey!"
 
@@ -112,6 +114,8 @@ print("words_publisher", words_publisher)
 print("readingLevel", readingLevel)
 print("readingTime", readingTime)
 
+
+'''
 # Create a workbook and add a worksheet.
 workbook = xlsxwriter.Workbook('Stats.xlsx')
 worksheet = workbook.add_worksheet()
@@ -139,6 +143,7 @@ expenses = (
 row = 0
 col = 0
 
+
 # Iterate over the data and write it out row by row.
 for item, cost in (expenses):
     worksheet.write(row, col,     item)
@@ -147,11 +152,25 @@ for item, cost in (expenses):
 
 workbook.close()
 
+'''
 
+from openpyxl import load_workbook
+workbook_name = 'Stats.xlsx'
+wb = load_workbook(workbook_name)
+page = wb.active
 
+# New data to write:
+new_companies = [nChars,nWords,nUniqueWords,ncharNoSpaces ,nSentences , wordsLongestSentence,
+                 wordsShortestSentence,avgSentenceWords, avgSentenceChars,  avgWordLength, nParagraphs
+                 , syllables, words_publisher, readingLevel, readingTime]
 
+maxR = page.max_row+1
+for column, entry in enumerate(new_companies,start=1):
+   page.cell(row=maxR, column=column, value=entry)
 
+wb.save(filename=workbook_name)
 
+print("done----------")
 
 
 
