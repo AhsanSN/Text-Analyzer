@@ -1,11 +1,13 @@
+print("started")
 import textstat
 textstat.set_lang("en_US")
 import xlsxwriter
+from textblob import TextBlob
+from openpyxl import load_workbook
+
 #from xlutils.copy import copy    
 #from xlrd import open_workbook
-
-
-txt = "my name is ahsan \n asd ahsan. hey!"
+print("imported")
 
 def unique(list1): 
     # intilize a null list 
@@ -82,95 +84,81 @@ def words_publisher(txt):
     txt = txt.replace('\n', '')
     return len(txt)/6
 
-nChars = len(txt)
-nWords = len(txt.split())
-nUniqueWords = len(unique(txt.split()))
-ncharNoSpaces = charNoSpaces(txt)
-nSentences = (txt.count("."))
-wordsLongestSentence = wordsLongestSentence(txt)
-wordsShortestSentence = wordsShortestSentence(txt)
-avgSentenceWords = avgSentenceWords(txt)
-avgSentenceChars = avgSentenceChars(txt)
-avgWordLength = avgWordLength(txt)
-nParagraphs = txt.count("\n")
-syllables = syllables(txt)
-words_publisher = words_publisher(txt)
-readingLevel = textstat.dale_chall_readability_score_v2(txt)
-readingTime = textstat.reading_time(txt)
 
-print("charLength", nChars)
-print("nWords", nWords)
-print("nUniqueWords", nUniqueWords)
-print("ncharNoSpaces", ncharNoSpaces)
-print("nSentences", nSentences)
-print("wordsLongestSentence", wordsLongestSentence)
-print("wordsShortestSentence", wordsShortestSentence)
-print("avgSentenceWords", avgSentenceWords)
-print("avgSentenceChars", avgSentenceChars)
-print("avgWordLength", avgWordLength)
-print("nParagraphs", nParagraphs)
-print("syllables", syllables)
-print("words_publisher", words_publisher)
-print("readingLevel", readingLevel)
-print("readingTime", readingTime)
-
-
-'''
-# Create a workbook and add a worksheet.
-workbook = xlsxwriter.Workbook('Stats.xlsx')
-worksheet = workbook.add_worksheet()
-
-# Some data we want to write to the worksheet.
-expenses = (
-    ['charLength', nChars],
-    ['nWords',   nWords],
-    ['nUniqueWords',  nUniqueWords],
-    ['ncharNoSpaces',    ncharNoSpaces],
-    ['nSentences',    nSentences],
-    ['wordsLongestSentence',    wordsLongestSentence],
-    ['wordsShortestSentence',    wordsShortestSentence],
-    ['avgSentenceWords',    avgSentenceWords],
-    ['avgSentenceChars',    avgSentenceChars],
-    ['avgWordLength',    avgWordLength],
-    ['nParagraphs',    nParagraphs],
-    ['syllables',    syllables],
-    ['words_publisher',    words_publisher],
-    ['readingLevel',    readingLevel],
-    ['readingTime',    readingTime]   
-)
-
-# Start from the first cell. Rows and columns are zero indexed.
-row = 0
-col = 0
-
-
-# Iterate over the data and write it out row by row.
-for item, cost in (expenses):
-    worksheet.write(row, col,     item)
-    worksheet.write(row, col + 1, cost)
-    row += 1
-
-workbook.close()
-
-'''
-
-from openpyxl import load_workbook
 workbook_name = 'Stats.xlsx'
 wb = load_workbook(workbook_name)
 page = wb.active
 
-# New data to write:
-new_companies = [nChars,nWords,nUniqueWords,ncharNoSpaces ,nSentences , wordsLongestSentence,
-                 wordsShortestSentence,avgSentenceWords, avgSentenceChars,  avgWordLength, nParagraphs
-                 , syllables, words_publisher, readingLevel, readingTime]
+def main():
+    
 
-maxR = page.max_row+1
-for column, entry in enumerate(new_companies,start=1):
-   page.cell(row=maxR, column=column, value=entry)
+    txt = str(input("Paste Paragraph: "))
+    blob = TextBlob(txt)
+    #frames
 
-wb.save(filename=workbook_name)
+    #values
+    nChars = len(txt)
+    nWords = len(txt.split())
+    nUniqueWords = len(unique(txt.split()))
+    ncharNoSpaces = charNoSpaces(txt)
+    nSentences = (txt.count("."))
+    wordsLongestSentenceVal = wordsLongestSentence(txt)
+    wordsShortestSentenceVal = wordsShortestSentence(txt)
+    avgSentenceWordsVal = avgSentenceWords(txt)
+    avgSentenceCharsVal = avgSentenceChars(txt)
+    avgWordLengthVal = avgWordLength(txt)
+    nParagraphsVal = txt.count("\n")
+    syllablesVal = syllables(txt)
+    words_publisherVal = words_publisher(txt)
+    readingLevelVal = textstat.dale_chall_readability_score_v2(txt)
+    readingTimeVal = textstat.reading_time(txt)
+    sentimentPolarityVal = blob.sentiment.polarity
 
-print("done----------")
+    nParasInp = int(input("Enter number of paragraphs: "))
+    gradeInp = str(input("Enter grade: "))
+
+    '''
+    print("charLength", nChars)
+    print("nWords", nWords)
+    print("nUniqueWords", nUniqueWords)
+    print("ncharNoSpaces", ncharNoSpaces)
+    print("nSentences", nSentences)
+    print("wordsLongestSentence", wordsLongestSentenceVal)
+    print("wordsShortestSentence", wordsShortestSentenceVal)
+    print("avgSentenceWords", avgSentenceWordsVal)
+    print("avgSentenceChars", avgSentenceCharsVal)
+    print("avgWordLength", avgWordLengthVal)
+    print("nParagraphs", nParagraphsVal)
+    print("syllables", syllablesVal)
+    print("words_publisher", words_publisherVal)
+    print("readingLevel", readingLevelVal)
+    print("readingTime", readingTimeVal)
+    print("sentimentPolarity", sentimentPolarityVal)
+    '''
+    print("")
+    print("Writing to file")
+
+    # New data to write:
+    new_companies = [nChars,nWords,nUniqueWords,ncharNoSpaces ,nSentences , wordsLongestSentenceVal,
+                     wordsShortestSentenceVal,avgSentenceWordsVal, avgSentenceCharsVal,  avgWordLengthVal, nParagraphsVal
+                     , syllablesVal, words_publisherVal, readingLevelVal, readingTimeVal, sentimentPolarityVal, nParasInp, gradeInp]
+
+    maxR = page.max_row+1
+    for column, entry in enumerate(new_companies,start=1):
+       page.cell(row=maxR, column=column, value=entry)
+
+    wb.save(filename=workbook_name)
+
+    print("-----------------DONE----------------------")
+    main()
+
+   
+main()
+
+
+
+
+
 
 
 
